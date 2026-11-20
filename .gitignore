@@ -1,0 +1,16 @@
+*.der
+*.pem
+*.p12
+*.pfx
+*.key
+.env
+.env.*
+__pycache__/
+*.py[cod]
+.DS_Store
+/build/
+/bin/
+/releases/
+/resources-before/
+*.prg
+*.iq
