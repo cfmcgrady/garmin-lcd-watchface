@@ -1,0 +1,7 @@
+<fonts>
+  <font id="TimeDigits" filename="lcd.fnt"/>
+  <font id="ChineseDate" filename="date.fnt"/>
+  <font id="HeartRateDigits" filename="hr.fnt"/>
+  <font id="SmallText" filename="small.fnt"/>
+  <font id="BatteryText" filename="battery.fnt"/>
+</fonts>
