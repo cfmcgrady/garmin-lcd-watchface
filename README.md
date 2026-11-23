@@ -1,44 +1,48 @@
 # LCD HR 245
 
-为 Garmin Forerunner 245 和 245 Music 设计的 Connect IQ 表盘。主屏以白色七段数字显示 24 小时时间，顶部显示中文日期。下方的绿色曲线展示最近一小时的心率走势，右侧显示当前心率，底部显示剩余电量。
+**English** | [简体中文](README.zh-CN.md)
 
-![Forerunner 245 模拟器预览，示例数据为 10:08、68 BPM、电量 82%](previews/v1.0.8-fr245.png)
+A Connect IQ watch face for the Garmin Forerunner 245 and 245 Music. White seven-segment digits show the time in 24-hour format, with the date in Chinese above them. A green graph shows the past hour of heart rate readings, with your current heart rate on the right and battery level below.
 
-## 安装 v1.0.8
+![Forerunner 245 simulator showing 10:08, a heart rate of 68 BPM, and 82% battery](previews/v1.0.8-fr245.png)
 
-1. [下载最终版 USB 安装包](https://github.com/cfmcgrady/garmin-lcd-watchface/raw/refs/tags/v1.0.8/dist/FR245-LCD-HR-v1.0.8-USB.zip)，在电脑上解压。
-2. 用支持数据传输的 USB 线连接手表，把 `LcdHr245.prg` 复制到手表的 `GARMIN/APPS/` 目录。
-3. 安全弹出手表并断开 USB，在手表上长按 **UP**，进入 **表盘**，选择 **LCD HR 245** 并应用。
+## Install v1.0.8
 
-安装包内的 `LcdHr245.prg` 是原版签名程序，共 16,348 字节。其 SHA-256 为 `20e5818e7dbbc78b62879b70b7b26b7fddea7281e1451d61a32813b47ce6cace`。
+1. Download and unzip the [USB installation package](https://github.com/cfmcgrady/garmin-lcd-watchface/raw/refs/tags/v1.0.8/dist/FR245-LCD-HR-v1.0.8-USB.zip).
+2. Connect the watch to your computer with a USB data cable. Copy `LcdHr245.prg` to the `GARMIN/APPS/` folder on the watch.
+3. Eject the watch and disconnect the cable. On the watch, hold **UP**, open **Watch Face**, select **LCD HR 245**, and apply it.
 
-## 心率与刷新
+The package contains the original signed `LcdHr245.prg` (16,348 bytes). Its SHA-256 checksum is `20e5818e7dbbc78b62879b70b7b26b7fddea7281e1451d61a32813b47ce6cace`.
 
-左侧曲线显示最近一小时的历史心率，每分钟内的采样取平均值，遇到无效读数或过长的采样间隔时会断开曲线。表盘每五分钟读取一次整段历史。右侧优先显示当前心率，平时每分钟更新，抬腕可触发额外更新，额外读取有 15 秒的间隔限制。只有历史读数可用时，最多沿用最近三分钟内的有效值，之后显示 `--`。
+## Heart rate and battery use
 
-v1.0.8 在可用内存充足时缓存已绘制的画面。实机续航改善尚未测量。
+The watch face reads the past hour of heart rate history every five minutes. Each point on the graph is a one-minute average. Invalid readings and long gaps in sampling break the line.
 
-## 构建与验证
+The current heart rate updates once a minute. Raising your wrist can trigger an extra reading if at least 15 seconds have passed since the last update. When a live reading is unavailable, the watch face uses the most recent valid reading for up to three minutes after it was recorded. It then shows `--`.
 
-本仓库提供 v1.0.8 的重建源码。恢复工作以早期原始工程为基础，对照最终版的布局、刷新逻辑、测试记录和已签名安装程序完成。
+Version 1.0.8 caches the watch face image when enough memory is available to avoid redrawing it on every update. The effect on battery life has yet to be measured on a physical watch.
 
-使用 Connect IQ SDK 9.2.0 为 `fr245` 和 `fr245m` 分别编译后，两份程序的全部非签名区段均与原版逐字节相同，包括 Monkey C 字节码、字体和图像。重建时使用了新的测试签名密钥。Forerunner 245 模拟器的 13 项测试全部通过，时间布局检查覆盖全天 1,440 个时刻。
+## Build and verify
 
-安装 Garmin Connect IQ SDK，并用 SDK Manager 下载 `fr245` 或 `fr245m` 的设备支持文件。用自己的 Connect IQ 开发者签名密钥编译。以下命令以 Forerunner 245 为例。
+The v1.0.8 source was reconstructed from an earlier copy of the project using the final layout, refresh logic, test records, and original signed program. With Connect IQ SDK 9.2.0 and a new test signing key, builds for both `fr245` and `fr245m` matched the original byte for byte in every section outside the developer signature, including the Monkey C bytecode, fonts, and images. All 13 tests passed on the Forerunner 245 simulator. The layout check covered all 1,440 times of day.
+
+Install the Garmin Connect IQ SDK and use the SDK Manager to download device support for your model. To build for the Forerunner 245, run this command from the project root with your own Connect IQ developer signing key.
 
 ```sh
 python3 tools/build.py --sdk /path/to/connectiq-sdk --key /path/to/developer.der --device fr245
 ```
 
-默认输出为 `build/LcdHr245.prg`。245 Music 使用 `--device fr245m`，输出为 `build/LcdHr245Music.prg`。项目内已包含位图字体；只有重新生成字形才需要运行 `tools/make_assets.py`，它使用 Pillow、系统字体 Noto Sans CJK Bold、DejaVu Sans Condensed Bold 以及仓库中的 DSEG 和 Roboto Condensed。
+The output is `build/LcdHr245.prg`. For the 245 Music, use `--device fr245m`. The output is `build/LcdHr245Music.prg`.
 
-编译模拟器测试时，在构建命令后增加 `--tests`。启动 Connect IQ Simulator，再用 SDK 的 `monkeydo` 运行测试。时间布局检查需要 Python 和 Pillow。
+The bitmap fonts are included. To regenerate them, run `tools/make_assets.py` with Pillow and the Noto Sans CJK Bold and DejaVu Sans Condensed Bold system fonts installed. The script also uses the bundled DSEG and Roboto Condensed fonts.
+
+To run the simulator tests, add `--tests` to the build command above, start the Connect IQ Simulator, and run the first command below using the SDK's `monkeydo` tool. The second command checks the time layout and requires Python and Pillow.
 
 ```sh
 monkeydo build/LcdHr245Tests.prg fr245 -t
 python3 tools/check_time_layout.py
 ```
 
-## 许可证
+## License
 
-项目原创代码采用 [Apache License 2.0](LICENSE)。[字体与图标的来源及许可](licenses/README.md)
+The project's original code is licensed under the [Apache License 2.0](LICENSE). See the [font and icon credits](licenses/README.md) for their licenses.
