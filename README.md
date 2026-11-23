@@ -6,7 +6,7 @@
 
 ## 安装 v1.0.8
 
-1. [下载最终版 USB 安装包](https://github.com/cfmcgrady/garmin-lcd-watchface/releases/download/v1.0.8/FR245-LCD-HR-v1.0.8-USB.zip)，在电脑上解压。
+1. [下载最终版 USB 安装包](https://github.com/cfmcgrady/garmin-lcd-watchface/raw/refs/tags/v1.0.8/dist/FR245-LCD-HR-v1.0.8-USB.zip)，在电脑上解压。
 2. 用支持数据传输的 USB 线连接手表，把 `LcdHr245.prg` 复制到手表的 `GARMIN/APPS/` 目录。
 3. 安全弹出手表并断开 USB，在手表上长按 **UP**，进入 **表盘**，选择 **LCD HR 245** 并应用。
 
